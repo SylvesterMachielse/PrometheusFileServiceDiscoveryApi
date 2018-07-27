@@ -23,7 +23,7 @@ Add a file `appsettings.json` next to the executable `prom-target-api.exe` (not 
 ```
 
 ## Concept
-This is a service that acts as a RESTful API that works with resources called 'targets'. These are just a copy of the targets as described in the [file_sd_config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) configuration. Be sure to honor the conventions of [host](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Chost%3E). [labelname](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) and [labelvalue](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E). The service does **_not_** validate that your models comply with the Prometheus requirements. 
+This is a service that acts as a RESTful API that works with resources called 'targets'. These are just a copy of the targets as described in the [file_sd_config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) configuration. Be sure to honor the conventions of [host](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Chost%3E), [labelname](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) and [labelvalue](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E). The service does **_not_** validate that your models comply with the Prometheus requirements. 
 
 ``` javascript
 //this is what i call a `target resource` 
