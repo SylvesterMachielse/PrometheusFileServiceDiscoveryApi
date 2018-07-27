@@ -36,14 +36,16 @@ namespace PromTargetApi
 
             var host = BuildWebHost(args, configuration, pathToContentRoot);
 
-            if (isService)
-            {
-                host.RunAsService();
-            }
-            else
-            {
-                host.Run();
-            }
+            host.Run();
+
+            //if (isService)
+            //{
+            //    host.RunAsService();
+            //}
+            //else
+            //{
+            //    host.Run();
+            //}
         }
 
         public static IWebHost BuildWebHost(string[] args, IConfigurationRoot configuration, string pathToContentRoot) =>

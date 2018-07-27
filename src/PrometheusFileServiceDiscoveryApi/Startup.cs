@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PrometheusFileServiceDiscoveryApi.DependecyInjection;
+using PrometheusFileServiceDiscoveryApi.DependencyInjection;
 
 namespace PromTargetApi
 {
@@ -39,7 +39,7 @@ namespace PromTargetApi
         {
             var targetsFileLocation = Configuration["TargetsFileLocation"];
 
-            builder.RegisterModule(new PromTargetApiModule(targetsFileLocation));
+            builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule(targetsFileLocation));
         }
     }
 }

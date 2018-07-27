@@ -4,13 +4,13 @@ using PrometheusFileServiceDiscoveryApi.Services.FileOperations;
 using PrometheusFileServiceDiscoveryApi.Services.Settings;
 using PrometheusFileServiceDiscoveryApi.Services.Targets;
 
-namespace PrometheusFileServiceDiscoveryApi.DependecyInjection
+namespace PrometheusFileServiceDiscoveryApi.DependencyInjection
 {
-    public class PromTargetApiModule : Module
+    public class PrometheusFileServiceDiscoveryApiModule : Module
     {
         private readonly string _targetsFileLocation;
 
-        public PromTargetApiModule(string targetsFileLocation)
+        public PrometheusFileServiceDiscoveryApiModule(string targetsFileLocation)
         {
             _targetsFileLocation = targetsFileLocation;
         }
