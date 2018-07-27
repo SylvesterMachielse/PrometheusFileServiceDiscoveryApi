@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/SylvesterMachielse/prom-target-api.svg?branch=master)](https://travis-ci.org/SylvesterMachielse/prom-target-api)
+[![Build Status](https://travis-ci.org/SylvesterMachielse/PrometheusFileServiceDiscoveryApi.svg?branch=master)](https://travis-ci.org/SylvesterMachielse/PrometheusFileServiceDiscoveryApi)
 
 # PrometheusFileServiceDiscoveryApi
 An HTTP service for updating the targets.json file when using Prometheus with 
