@@ -4,6 +4,8 @@
 An HTTP service for updating the targets.json file when using Prometheus with 
 [file_sd_config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Cfile_sd_config%3E). 
 
+This service can be called from the [IISDiscoveryService]https://github.com/SylvesterMachielse/IISDiscoveryService. This way you can add IIS websites to prometheus as scrape targets automatically.
+
 ## Configuration
 Add file service discovery to prometheus. If your targets.json file is next to the prometheus.exe, you can add this to the `prometheus.yml` file.
 ```YAML
