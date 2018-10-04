@@ -1,22 +1,26 @@
+using System;
+using System.Linq;
 using PrometheusFileServiceDiscoveryApi.Services.Models;
 
 namespace PrometheusFileServiceDiscoveryApi.Services.Settings
 {
     public class SettingsProvider : IProvideSettings
     {
-        private readonly string _targetsFileLocation;
-        
-        public SettingsProvider(string targetsFileLocation)
+       private readonly AppConfiguration _appConfiguration;
+
+        public SettingsProvider(AppConfiguration appConfiguration)
         {
-            _targetsFileLocation = targetsFileLocation;
+            _appConfiguration = appConfiguration;
         }
 
-        public SettingsModel Provide()
+        public AppConfiguration Provide()
         {
-           return new SettingsModel()
-           {
-               TargetFileLocation = _targetsFileLocation
-           };
+            return _appConfiguration;
+        }
+
+        public string ProvideTargetFileLocation(string group)
+        {
+            return _appConfiguration.TargetFileLocations.Single(x=> x.Name.Equals(group, StringComparison.InvariantCultureIgnoreCase)).TargetsFileLocation;
         }
     }
 }

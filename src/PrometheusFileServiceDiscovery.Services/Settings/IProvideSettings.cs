@@ -4,6 +4,7 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Settings
 {
     public interface IProvideSettings
     {
-        SettingsModel Provide();
+        AppConfiguration Provide();
+        string ProvideTargetFileLocation(string group);
     }
 }

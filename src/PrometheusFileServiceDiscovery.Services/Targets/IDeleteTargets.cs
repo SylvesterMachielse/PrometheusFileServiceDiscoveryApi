@@ -4,6 +4,6 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 {
     public interface IDeleteTargets
     {
-        Task Delete(string targetName);
+        Task Delete(string group, string targetName);
     }
 }

@@ -19,9 +19,9 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
             _fileReader = fileReader;
         }
 
-        public async Task<TargetsModel> Provide()
+        public async Task<TargetsModel> Provide(string group)
         {
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
 
             var targetsFileContent = await _fileReader.TryRead(targetsFileLocation);
 

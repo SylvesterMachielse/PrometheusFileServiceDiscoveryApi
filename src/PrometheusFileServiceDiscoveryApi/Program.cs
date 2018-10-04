@@ -6,6 +6,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using PrometheusFileServiceDiscoveryApi.Services.Models;
 
 
 namespace PromTargetApi
@@ -48,11 +50,15 @@ namespace PromTargetApi
             //}
         }
 
-        public static IWebHost BuildWebHost(string[] args, IConfigurationRoot configuration, string pathToContentRoot) =>
+        public static IWebHost BuildWebHost(string[] args, IConfigurationRoot configuration,
+            string pathToContentRoot) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseContentRoot(pathToContentRoot)
-                .ConfigureServices(services => services.AddAutofac())
+                .ConfigureServices(services =>
+                {
+                    services.AddAutofac();
+                })
                 .UseUrls(configuration["Host"])
                 .Build();
     }

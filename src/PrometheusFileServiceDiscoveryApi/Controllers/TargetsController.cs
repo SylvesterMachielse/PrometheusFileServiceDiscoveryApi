@@ -24,43 +24,43 @@ namespace PrometheusFileServiceDiscoveryApi.Controllers
             _targetDeleter = targetDeleter;
         }
 
-        [HttpGet]
-        public async Task<JsonResult> Get()
+        [HttpGet("{group}")]
+        public async Task<JsonResult> Get(string group)
         {
-            var targets = await _targetsProvider.Provide();
+            var targets = await _targetsProvider.Provide(group);
 
             return Json(targets);
         }
 
-        [HttpGet("{targetname}")]
-        public async Task<TargetModel> Get(string targetName)
+        [HttpGet("{group}/{targetname}")]
+        public async Task<TargetModel> Get(string group, string targetName)
         {
-            var targets = await _targetsProvider.Provide();
+            var targets = await _targetsProvider.Provide(group);
             
             return targets.SingleOrDefault(x =>
                 x.Targets.Any(t => t.Equals(targetName, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        [HttpDelete("{targetname}")]
-        public async Task<HttpStatusCode> Delete(string targetname)
+        [HttpDelete("{group}/{targetname}")]
+        public async Task<HttpStatusCode> Delete(string group, string targetname)
         {
-            await _targetDeleter.Delete(targetname);
+            await _targetDeleter.Delete(group, targetname);
 
             return HttpStatusCode.OK;
         }
 
-        [HttpPut]
-        public async Task<HttpStatusCode> Put([FromBody] TargetModel targetModel)
+        [HttpPut("{group}")]
+        public async Task<HttpStatusCode> Put(string group, [FromBody] TargetModel targetModel)
         {
-            await _targetPersister.Add(targetModel);
+            await _targetPersister.Add(group, targetModel);
 
             return HttpStatusCode.OK;
         }
 
-        [HttpPatch("{targetname}")]
-        public async Task<HttpStatusCode> Patch(string targetname, [FromBody] TargetModel targetModel)
+        [HttpPatch("{group}/{targetname}")]
+        public async Task<HttpStatusCode> Patch(string group, string targetname, [FromBody] TargetModel targetModel)
         {
-            await _targetPersister.Update(targetname, targetModel);
+            await _targetPersister.Update(group, targetname, targetModel);
 
             return HttpStatusCode.OK;
         }

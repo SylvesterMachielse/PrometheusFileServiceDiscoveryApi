@@ -5,6 +5,6 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 {
     public interface IProvideTargets
     {
-        Task<TargetsModel> Provide();
+        Task<TargetsModel> Provide(string group);
     }
 }

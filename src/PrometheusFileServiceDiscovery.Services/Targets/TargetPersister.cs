@@ -23,9 +23,9 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
             _settingsProvider = settingsProvider;
         }
 
-        public async Task Add(TargetModel targetModel)
+        public async Task Add(string group, TargetModel targetModel)
         {
-            var allTargets = await _targetsProvider.Provide();
+            var allTargets = await _targetsProvider.Provide(group);
 
             var existingTargets = allTargets.Where(x =>
                 x.Targets.Any(t =>
@@ -41,16 +41,16 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 
             var allTargetsJsonText = JsonConvert.SerializeObject(allTargets);
 
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
 
             await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
         }
 
-        public async Task Update(string targetName, TargetModel patchedTargetModel)
+        public async Task Update(string group, string targetName, TargetModel patchedTargetModel)
         {
             EnsureResourceIdentifierIsNotPatched(targetName, patchedTargetModel);
 
-            var targets = await _targetsProvider.Provide();
+            var targets = await _targetsProvider.Provide(group);
 
             var targetToPatch = targets.SingleOrDefault(x =>
                 x.Targets.Any(t => t.Equals(targetName, StringComparison.InvariantCultureIgnoreCase)));
@@ -66,7 +66,7 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 
             var allTargetsJsonText = JsonConvert.SerializeObject(targetsList);
 
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
 
             await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
         }
