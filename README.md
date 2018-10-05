@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/SylvesterMachielse/PrometheusFileServiceDiscoveryApi.svg?branch=master)](https://travis-ci.org/SylvesterMachielse/PrometheusFileServiceDiscoveryApi)
 
 # PrometheusFileServiceDiscoveryApi
-An HTTP service for updating the targets.json file when using Prometheus with 
+An HTTP service for updating a .json file when using Prometheus with 
 [file_sd_config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Cfile_sd_config%3E). 
 
 ## Configuration
@@ -16,19 +16,29 @@ Add file service discovery to prometheus. If your targets.json file is next to t
 Add a file `appsettings.json` next to the executable `prom-target-api.exe` (not provided) file.
 
 ```javascript
-{ 
-  "TargetsFileLocation": "C:\\Workfolder\\prometheus-2.1.0.windows-amd64\\targets.json",
-  "Host": "http://localhost:6000"
+{
+    "Host": "http://localhost:6000",
+    "TargetFileLocations": [
+        {
+            "Name": "Production",
+            "TargetsFileLocation": "C:\\Workfolder\\prometheus-2.1.0.windows-amd64\\production_targets.json"
+        },
+        {
+            "Name": "Test",
+            "TargetsFileLocation": "C:\\Workfolder\\prometheus-2.1.0.windows-amd64\\test_targets.json"
+        }
+    ]
 }
+
 ```
 
 ## Concept
 This is a service that acts as a RESTful API that works with resources called 'targets'. These are just a copy of the targets as described in the [file_sd_config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) configuration. Be sure to honor the conventions of [host](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Chost%3E), [labelname](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E) and [labelvalue](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Clabelname%3E). The service does **_not_** validate that your models comply with the Prometheus requirements. 
 
 ``` javascript
-//this is what i call a `target resource` 
+//this is what a `target resource` 
 {
-    //here is a targets collection
+    //this is the actual endpoint that will be scraped
     "targets": [
         "mynewtarget.com", //this is a target
 	"someothertarget.com" //this is a target
@@ -46,12 +56,12 @@ This is a service that acts as a RESTful API that works with resources called 't
 
 ### Endpoints
 #### GET
-`http://localhost:6000/api/v1/targets`
+`http://localhost:6000/api/v1/targets/production`
 
-`http://localhost:6000/api/v1/targets/mytarget.com` 
+`http://localhost:6000/api/v1/targets/production/mytarget.com` 
 
 #### PUT
-`http://localhost:6000/api/v1/targets`
+`http://localhost:6000/api/v1/targets/production`
 
 ``` javascript
 {
@@ -66,7 +76,7 @@ This is a service that acts as a RESTful API that works with resources called 't
 ```
 
 #### PATCH
-`http://localhost:6000/api/v1/targets/mynewtarget.com`
+`http://localhost:6000/api/v1/targets/production/mynewtarget.com`
 
 ``` javascript
 {
@@ -81,4 +91,4 @@ This is a service that acts as a RESTful API that works with resources called 't
 ```
 
 #### DELETE
-`http://localhost:6000/api/v1/targets/mytarget.com`
+`http://localhost:6000/api/v1/targets/production/mytarget.com`
