@@ -5,7 +5,7 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 {
     public interface IPersistTargets
     {
-        Task Add(TargetModel targetModel);
-        Task Update(string targetName, TargetModel patchedTargetModel);
+        Task Add(string group, TargetModel targetModel);
+        Task Update(string group, string targetName, TargetModel patchedTargetModel);
     }
 }

@@ -22,9 +22,9 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
             _settingsProvider = settingsProvider;
         }
 
-        public async Task Delete(string targetName)
+        public async Task Delete(string group, string targetName)
         {
-            var allTargets = await _targetsProvider.Provide();
+            var allTargets = await _targetsProvider.Provide(group);
 
             var targetToDelete = allTargets.ToList().SingleOrDefault(x =>
                 x.Targets.Any(t => t.Equals(targetName, StringComparison.InvariantCultureIgnoreCase)));
@@ -42,7 +42,7 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 
             var allTargetsJsonText = JsonConvert.SerializeObject(allTargets);
 
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
 
             await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
         }

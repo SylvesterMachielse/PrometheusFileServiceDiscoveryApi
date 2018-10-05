@@ -23,10 +23,23 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
             _settingsProvider = settingsProvider;
         }
 
-        public async Task Add(TargetModel targetModel)
+        public async Task Add(string group, TargetModel targetModel)
         {
-            var allTargets = await _targetsProvider.Provide();
+            var allTargets = await _targetsProvider.Provide(group);
 
+            EnsureTargetDoesNotExist(targetModel, allTargets);
+
+            allTargets.Add(targetModel);
+
+            var allTargetsJsonText = JsonConvert.SerializeObject(allTargets);
+
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
+
+            await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
+        }
+
+        private static void EnsureTargetDoesNotExist(TargetModel targetModel, TargetsModel allTargets)
+        {
             var existingTargets = allTargets.Where(x =>
                 x.Targets.Any(t =>
                     targetModel.Targets.Any(newTarget =>
@@ -36,24 +49,15 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
             {
                 throw new ArgumentException($"Target with same name already exists");
             }
-
-            allTargets.Add(targetModel);
-
-            var allTargetsJsonText = JsonConvert.SerializeObject(allTargets);
-
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
-
-            await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
         }
 
-        public async Task Update(string targetName, TargetModel patchedTargetModel)
+        public async Task Update(string group, string targetName, TargetModel patchedTargetModel)
         {
             EnsureResourceIdentifierIsNotPatched(targetName, patchedTargetModel);
 
-            var targets = await _targetsProvider.Provide();
+            var targets = await _targetsProvider.Provide(group);
 
-            var targetToPatch = targets.SingleOrDefault(x =>
-                x.Targets.Any(t => t.Equals(targetName, StringComparison.InvariantCultureIgnoreCase)));
+            var targetToPatch = targets.SingleOrDefault(x => x.Targets.Any(t => t.Equals(targetName, StringComparison.InvariantCultureIgnoreCase)));
 
             EnsureTargetExists(targetName, targetToPatch);
 
@@ -66,7 +70,7 @@ namespace PrometheusFileServiceDiscoveryApi.Services.Targets
 
             var allTargetsJsonText = JsonConvert.SerializeObject(targetsList);
 
-            var targetsFileLocation = _settingsProvider.Provide().TargetFileLocation;
+            var targetsFileLocation = _settingsProvider.ProvideTargetFileLocation(group);
 
             await _fileWriter.TryWrite(allTargetsJsonText, targetsFileLocation);
         }

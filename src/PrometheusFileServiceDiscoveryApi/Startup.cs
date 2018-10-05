@@ -1,10 +1,13 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using PrometheusFileServiceDiscoveryApi.DependencyInjection;
+using PrometheusFileServiceDiscoveryApi.Services.Models;
 
 namespace PromTargetApi
 {
@@ -20,6 +23,8 @@ namespace PromTargetApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<AppConfiguration>(Configuration);
             services.AddMvc();
             services.AddAutofac();
         }
@@ -37,9 +42,17 @@ namespace PromTargetApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            var targetsFileLocation = Configuration["TargetsFileLocation"];
+            //var fileConfigurations =   Configuration.GetValue<List<FileConfiguration>>("fileconfigurations");
+          
+            
 
-            builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule(targetsFileLocation));
+            //var fileConfigurations = Configuration.GetValue<List<FileConfiguration>>("FileConfigurations");
+
+            //var blarf = (List<FileConfiguration>) fileConfigurations;
+
+            var appConfiguration = Configuration.Get<AppConfiguration>();
+            builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule(appConfiguration));
+                //builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule());
         }
     }
 }
