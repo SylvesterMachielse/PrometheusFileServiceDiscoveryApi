@@ -19,8 +19,7 @@ namespace PromTargetApi
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+      
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
@@ -28,8 +27,7 @@ namespace PromTargetApi
             services.AddMvc();
             services.AddAutofac();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -41,18 +39,10 @@ namespace PromTargetApi
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
-        {
-            //var fileConfigurations =   Configuration.GetValue<List<FileConfiguration>>("fileconfigurations");
-          
-            
-
-            //var fileConfigurations = Configuration.GetValue<List<FileConfiguration>>("FileConfigurations");
-
-            //var blarf = (List<FileConfiguration>) fileConfigurations;
-
+        { 
             var appConfiguration = Configuration.Get<AppConfiguration>();
+            
             builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule(appConfiguration));
-                //builder.RegisterModule(new PrometheusFileServiceDiscoveryApiModule());
         }
     }
 }
