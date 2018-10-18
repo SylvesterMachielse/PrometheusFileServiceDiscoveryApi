@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="PrometheusFileServiceDiscoveryApi.Contracts" Version="1.0.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="2.1.0.178" />
+    <PackageReference Include="System.IO.Abstractions" Version="2.1.0.232" />
   </ItemGroup>
 
   <ItemGroup>
